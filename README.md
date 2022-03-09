@@ -47,7 +47,7 @@ Data can be obtained via yahoo finance [here](https://sg.finance.yahoo.com/quote
 ## Project struture:
 * data: stores the .csv files for input and output for preprocessing procedure.
 * output: stores any visible output from execution.
-* code_example.ibynb: please refer to this notebook to observe the structure of our model.
+* code_example.ipynb: please refer to this notebook to observe the structure of our model.
 * data_preprocessing.py: preprocess raw data into consumable data.
 * model.py: includes models.
 * train.py: run this file to train the models.
