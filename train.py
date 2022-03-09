@@ -1,4 +1,3 @@
-from sympy import plot
 from data_preprocessing import sns, pd, np, plt, sys, split_data
 from model import GRU, torch, nn
 from sklearn.preprocessing import MinMaxScaler

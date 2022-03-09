@@ -1,0 +1,9 @@
+notebook
+jupyter_contrib_nbextensions
+jupyter_nbextensions_configurator
+pandas
+numpy
+matplotlib
+seaborn
+sklearn
+forex_python
