@@ -59,7 +59,7 @@ def plot_training_loss(hist, s):
     plt.show()
 
 def plot_prediction(data, y_test_gru, y_test_pred, s):
-    figure, axes = plt.subplots(figsize=(15, 6))
+    _, axes = plt.subplots(figsize=(20, 6))
     axes.xaxis_date()
     axes.plot(data[len(data)-len(y_test_gru):].index, y_test_gru, color='red', label='Real '+s+' Stock Price')
     axes.plot(data[len(data)-len(y_test_gru):].index, y_test_pred, color='blue', label='Predicted '+s+' Stock Price')
@@ -67,6 +67,7 @@ def plot_prediction(data, y_test_gru, y_test_pred, s):
     plt.xlabel('Time')
     plt.ylabel('Stock Price')
     plt.legend()
+    plt.xticks(rotation=65)
     plt.savefig('./output/'+s+'_pred.png')
     plt.show()
 
@@ -78,19 +79,24 @@ def score(y_train_gru, y_train_pred, y_test_gru, y_test_pred):
 def main(filename1, filename2):
     ads_data, nke_data = read_file(filename1, filename2)
     model = GRU(input_dim=input_dim, hidden_dim=hidden_dim, output_dim=output_dim, num_layers=num_layers)
+    ads_data.index = ads_data['Date']
+    ads_data.drop('Date', axis=1, inplace=True)
+    nke_data.index = nke_data['Date']
+    nke_data.drop('Date', axis=1, inplace=True)
     price1 = ads_data[['Close']]
     price2 = nke_data[['Close']]
-    scaler = MinMaxScaler(feature_range=(-1, 1))
-    price1['Close'] = scaler.fit_transform(price1['Close'].values.reshape(-1, 1))
-    price2['Close'] = scaler.fit_transform(price2['Close'].values.reshape(-1, 1))
+    scaler1 = MinMaxScaler(feature_range=(-1, 1))
+    scaler2 = MinMaxScaler(feature_range=(-1, 1))
+    price1['Close'] = scaler1.fit_transform(price1['Close'].values.reshape(-1, 1))
+    price2['Close'] = scaler2.fit_transform(price2['Close'].values.reshape(-1, 1))
     X1_train, y1_train_gru, X1_test, y1_test_gru = pass_to_tensor(price1, lookback)
     X2_train, y2_train_gru, X2_test, y2_test_gru = pass_to_tensor(price2, lookback)
     hist1, y1_train_pred = train(model, X1_train, y1_train_gru)
     hist2, y2_train_pred = train(model, X2_train, y2_train_gru)
     plot_training_loss(hist1, 'ads')
     plot_training_loss(hist2, 'nke')
-    y1_train_gru, y1_train_pred, y1_test_gru, y1_test_pred = result(model, scaler, X1_test, y1_train_pred, y1_train_gru, y1_test_gru)
-    y2_train_gru, y2_train_pred, y2_test_gru, y2_test_pred = result(model, scaler, X2_test, y2_train_pred, y2_train_gru, y2_test_gru)
+    y1_train_gru, y1_train_pred, y1_test_gru, y1_test_pred = result(model, scaler1, X1_test, y1_train_pred, y1_train_gru, y1_test_gru)
+    y2_train_gru, y2_train_pred, y2_test_gru, y2_test_pred = result(model, scaler2, X2_test, y2_train_pred, y2_train_gru, y2_test_gru)
     train1_score, test1_score = score(y1_train_gru, y1_train_pred, y1_test_gru, y1_test_pred)
     train2_score, test2_score = score(y2_train_gru, y2_train_pred, y2_test_gru, y2_test_pred)
     print('Train ADS Score: %.2f RMSE' % (train1_score))

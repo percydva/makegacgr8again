@@ -61,7 +61,7 @@ def main(filename1, filename2):
     ads_data, nke_data = read_file(filename1, filename2)
     ads_data = currency_rates(ads_data)
     ads_data = exchange_currency(ads_data)
-    if len(filename1) < 10:
+    if len(filename1) < 20:
         output1 = 'ads'
         output2 = 'nke'  
     else:
