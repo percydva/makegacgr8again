@@ -55,17 +55,17 @@ Data can be obtained via yahoo finance [here](https://sg.finance.yahoo.com/quote
 ## Usage:
 * Data preprocessing:
 ```bash
-python3 data_preprocessing.py ./data/<your_raw_data_file.csv>
+python3 data_preprocessing.py ./data/<filename1>.csv ./data/<filename2>.csv
 ```
 * Train the model for prediction:
 ```bash
-python3 train.py ./data/<your_preprocessed_data_file.csv>
+python3 train.py ./data/<filename1.csv> ./data/<filename2.csv>
 ```
 
 * Example:
 ```bash
-python3 data_preprocessing.py ./data/ADS.DE.csv
+python3 data_preprocessing.py ./data/ADS.DE.csv ./data/NKE.csv
 ```
 ```bash
-python3 train.py ./data/ads_preprocessing.csv
+python3 train.py ./data/ads_preprocessing.csv ./data/NKE.csv
 ```
